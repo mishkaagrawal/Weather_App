@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Latest Weather Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9fbfc;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        .timestamp {
+            margin: 20px 0;
+            font-size: 18px;
+        }
+        pre {
+            background: #eef2f5;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+            max-width: 700px;
+            margin: auto;
+            overflow-x: auto;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h2>Latest Weather Data</h2>
+
+    <div class="timestamp" id="timestamp">Loading...</div>
+
+    <button id="refresh-btn">Refresh Data</button>
+
+    <pre id="weather-data">Loading...</pre>
+
+    <script>
+
+async function fetchLatestData() {
+    document.getElementById('weather-data').textContent = 'Loading...';
+    const response = await fetch('/latest_data');
+    const data = await response.json();
+
+    if (data.error) {
+        document.getElementById('weather-data').textContent = data.error;
+        return;
+    }
+
+    const time = data.latest_time ? data.latest_time.replace('_', ' ') + ' UTC' : 'N/A';
+    document.getElementById('timestamp').innerHTML = `Showing data from <strong>${time}</strong>`;
+
+    let html = '';
+    for (const [city, info] of Object.entries(data.data)) {
+        // City heading
+        html += `<h3 style="margin-top: 30px; margin-bottom: 10px;">${city}</h3>`;
+
+        // JSON content (wrapped text, no scrollbars)
+        const cleanData = { ...info };
+        delete cleanData.mood;
+
+
+        let formattedText = Object.entries(cleanData)
+    .map(([key, value]) => `${key}: ${value}`)
+    .join("\n");
+
+html += `<pre style="
+    background: #eef2f5;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: left;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-x: hidden;
+    max-width: 700px;
+    margin: auto;
+    line-height: 1.4;
+">${formattedText}</pre>`;
+
+        // Mood line (bold + colored + fully visible)
+        if (info.mood) {
+            html += `<div style="
+                        font-weight: bold;
+                        color: #0066cc;
+                        font-size: 16px;
+                        margin-top: 8px;
+                        margin-bottom: 30px;
+                        text-align: center;
+                        white-space: normal;
+                        line-height: 1.5;
+                        max-width: 700px;
+                        margin-left: auto;
+                        margin-right: auto;
+                    ">
+                        Mood: ${info.mood}
+                     </div>`;
+        }
+    }
+
+    document.getElementById('weather-data').innerHTML = html;
+}
+
+document.getElementById('refresh-btn').addEventListener('click', fetchLatestData);
+window.onload = fetchLatestData;
+
+
+    </script>
+</body>
+</html>

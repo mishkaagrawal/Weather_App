@@ -1,0 +1,8 @@
+Flask==3.0.3
+google-cloud-storage==2.18.2
+gunicorn==23.0.0
+google-cloud-aiplatform
+google-genai
+google-auth
+python-dotenv
+requests
