@@ -1,22 +1,20 @@
-name: 'Build and Deploy to GKE'
+name: Deploy
 
 on:
   push:
     branches:
-      - main  # Trigger only on pushes to main branch
+      - main
 
 env:
   PROJECT_ID: "mishka-cme-project"
-  GAR_LOCATION: "asia-south1"
   GKE_CLUSTER: "weather-gke-cluster"
   GKE_ZONE: "asia-south1"
   DEPLOYMENT_NAME: "weather-dashboard"
-  REPOSITORY: "Weather_App"
-  IMAGE: "weather-image"
+  REPOSITORY: "weatherapp"
+  IMAGE: "weatherapp"
   WORKLOAD_IDENTITY_PROVIDER: "projects/574573355783/locations/global/workloadIdentityPools/github-pool/providers/github"
   SERVICE_ACCOUNT: "github-deployer@mishka-cme-project.iam.gserviceaccount.com"
 
-  
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -25,26 +23,27 @@ jobs:
       id-token: write
 
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Authenticate to Google Cloud
+      - id: auth
+        name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ env.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ env.SERVICE_ACCOUNT }}
 
-      - name: Configure Docker for Artifact Registry
+      - name: Configure Docker for GCR
         run: |
-          gcloud auth configure-docker $GAR_LOCATION-docker.pkg.dev --quiet
+          gcloud auth configure-docker gcr.io --quiet
 
-      - name: Build and Push Docker image
+      - name: Build and push Docker image to GCR
         run: |
-          IMAGE_TAG="$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:${GITHUB_SHA}"
+          IMAGE_TAG="gcr.io/${PROJECT_ID}/${REPOSITORY}:${GITHUB_SHA}"
           docker build -t "$IMAGE_TAG" .
           docker push "$IMAGE_TAG"
 
-      - name: Get GKE credentials
+      - name: Set up GKE credentials
         uses: google-github-actions/get-gke-credentials@v2
         with:
           cluster_name: ${{ env.GKE_CLUSTER }}
@@ -52,6 +51,5 @@ jobs:
 
       - name: Deploy to GKE
         run: |
-          kubectl set image deployment/$DEPLOYMENT_NAME weather-dashboard="$IMAGE_TAG"
-          kubectl rollout status deployment/$DEPLOYMENT_NAME
-          kubectl get svc -o wide
+          kubectl set image deployment/${DEPLOYMENT_NAME} weather-dashboard=gcr.io/${PROJECT_ID}/${REPOSITORY}:${GITHUB_SHA}
+          kubectl rollout status deployment/${DEPLOYMENT_NAME}
