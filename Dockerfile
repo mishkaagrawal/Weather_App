@@ -11,9 +11,6 @@ COPY . .
 RUN pip install --no-cache-dir -r requirements.txt \
     && pip install --no-cache-dir -r weather-dashboard/requirements.txt
 
-# Copy environment variables if needed
-COPY weather-dashboard/.env ./weather-dashboard/.env
-
 # Expose the Flask app port
 EXPOSE 8080
 
