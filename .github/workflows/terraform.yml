@@ -61,8 +61,8 @@ jobs:
         run: terraform init 
 
       - name: Terraform Plan
-        run: terraform plan -var-file=terraform.tfvars 
+        run: terraform plan 
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
-        run: terraform apply -auto-approve -var-file=terraform.tfvars 
+        run: terraform apply 
