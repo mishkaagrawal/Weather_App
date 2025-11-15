@@ -11,7 +11,7 @@ env:
   GKE_CLUSTER: "weather-gke-cluster"
   GKE_ZONE: "asia-south1"
   DEPLOYMENT_NAME: "weather-dashboard"
-  REPOSITORY: "weather-app"
+  REPOSITORY: "Weather_App"
   IMAGE: "weather-image"
   WORKLOAD_IDENTITY_PROVIDER: "projects/574573355783/locations/global/workloadIdentityPools/github-pool/providers/github"
   SERVICE_ACCOUNT: "github-deployer@mishka-cme-project.iam.gserviceaccount.com"
