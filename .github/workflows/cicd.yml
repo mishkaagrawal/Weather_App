@@ -72,11 +72,13 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
       # Create SA Key JSON file
+      - name: Create key folder
+        run: mkdir -p terraform/keys
+
       - name: Create service account key file
-        run: |
-          echo "${SERVICE_ACCOUNT_KEY}" > $HOME/gcp-key.json
+        run: echo "${SERVICE_ACCOUNT_KEY}" > terraform/keys/mishka-service-key.json
         env:
-          SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+            SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }} 
 
       - name: Terraform Init
         working-directory: ./terraform
@@ -86,7 +88,7 @@ jobs:
         working-directory: ./terraform
         env:
           TF_VAR_weather_api_key: ${{ secrets.WEATHER_API_KEY }}
-          TF_VAR_service_account_key_path: $HOME/gcp-key.json
+          TF_VAR_service_account_key_path: "keys/mishka-service-key.json"
         run: terraform apply -auto-approve
 
   # -------------------------------
