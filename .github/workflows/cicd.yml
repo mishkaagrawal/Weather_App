@@ -71,14 +71,6 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
-      # Create SA Key JSON file
-      - name: Create key folder
-        run: mkdir -p terraform/keys
-
-      - name: Create service account key file
-        run: echo "${SERVICE_ACCOUNT_KEY}" > terraform/keys/mishka-service-key.json
-        env:
-            SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }} 
 
       - name: Terraform Init
         working-directory: ./terraform
