@@ -54,9 +54,7 @@ def home():
 
 def generate_weather_mood(city, data):
     """Generate a natural, fun mood description using Vertex AI."""
-    if os.getenv("ENABLE_AI", "false").lower() != "true":
-        return "AI insights are currently disabled."
-
+  
     if not ai_available:
         return "Google GenAI SDK not installed."
 
