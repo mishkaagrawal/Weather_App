@@ -19,9 +19,9 @@ variable "weather_api_key" {
   sensitive = true
 }
 
-variable "service_account_key_path" {
-  default = "keys/mishka-service-key.json"
-  description = "Path to service account key JSON"
+variable "service_account_key" {
+  type      = string
+  sensitive = true
 }
 
 variable "k8s_sa_name" {

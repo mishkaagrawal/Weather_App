@@ -26,7 +26,7 @@ resource "google_secret_manager_secret_version" "weather_api_key_version" {
 
 # Service Account JSON Key secret
 resource "google_secret_manager_secret" "service_account_key" {
-  secret_id = "weather-service-account-key"
+  secret_id = "service-account-key"
   replication {
     auto{}
   }
@@ -34,7 +34,7 @@ resource "google_secret_manager_secret" "service_account_key" {
 
 resource "google_secret_manager_secret_version" "service_account_key_version" {
   secret      = google_secret_manager_secret.service_account_key.id
-  secret_data = file(var.service_account_key_path)
+  secret_data = var.service_account_key
 }
 
 resource "google_service_account" "weather_k8s_sa" {
@@ -66,7 +66,7 @@ resource "kubernetes_secret" "weather_secrets" {
 
   data = {
     WEATHER_API_KEY               = var.weather_api_key
-    GOOGLE_APPLICATION_CREDENTIALS = file(var.service_account_key_path)
+    GOOGLE_APPLICATION_CREDENTIALS = var.service_account_key
   }
 
   type = "Opaque"
