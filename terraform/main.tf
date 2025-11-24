@@ -22,7 +22,6 @@ data "google_secret_manager_secret" "service_account_key" {
 
 data "google_service_account" "weather_k8s_sa" {
   account_id   = "weather-k8s-service-account"
-  display_name = "Weather App Kubernetes Service Account"
 }
 
 ############################################
