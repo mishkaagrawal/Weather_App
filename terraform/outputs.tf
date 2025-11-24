@@ -51,5 +51,5 @@ output "gcloud_get_credentials_command" {
 
 
 output "service_account_email" {
-  value = google_service_account.weather_k8s_sa.email
+  value = data.google_service_account.weather_k8s_sa.email
 }
