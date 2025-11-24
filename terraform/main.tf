@@ -31,13 +31,13 @@ data "google_service_account" "weather_k8s_sa" {
 resource "google_secret_manager_secret_iam_member" "weather_api_reader" {
   secret_id = google_secret_manager_secret.weather_api_key.id
   role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${google_service_account.weather_k8s_sa.email}"
+  member    = "serviceAccount:${data.google_service_account.weather_k8s_sa.email}"
 }
 
 resource "google_secret_manager_secret_iam_member" "sa_key_reader" {
   secret_id = google_secret_manager_secret.service_account_key.id
   role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${google_service_account.weather_k8s_sa.email}"
+  member    = "serviceAccount:${data.google_service_account.weather_k8s_sa.email}"
 }
 
 resource "kubernetes_secret" "weather_secrets" {
