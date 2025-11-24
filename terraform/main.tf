@@ -11,30 +11,13 @@ resource "google_project_service" "enabled_apis" {
   service = each.key
 }
 
-# Weather API Key Secret
 data "google_secret_manager_secret" "weather_api_key" {
   secret_id = "weather-api-key"
-  replication {
-    auto{}
-  }
 }
 
-resource "google_secret_manager_secret_version" "weather_api_key_version" {
-  secret      = google_secret_manager_secret.weather_api_key.id
-  secret_data = var.weather_api_key
-}
-
-# Service Account JSON Key secret
+# Service Account JSON Key secret (existing secret)
 data "google_secret_manager_secret" "service_account_key" {
   secret_id = "service-account-key"
-  replication {
-    auto{}
-  }
-}
-
-resource "google_secret_manager_secret_version" "service_account_key_version" {
-  secret      = google_secret_manager_secret.service_account_key.id
-  secret_data = var.service_account_key
 }
 
 data "google_service_account" "weather_k8s_sa" {
