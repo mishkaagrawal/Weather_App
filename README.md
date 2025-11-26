@@ -1,38 +1,52 @@
 # Weather App
 
-A cloud-native weather dashboard application built with Python, deployed on **Google Kubernetes Engine (GKE)**, using **Docker** and **Terraform** for infrastructure management.
+This project implements a serverless, event-driven, fully automated microservice on Google Cloud Platform (GCP) with:
 
----
+Serverless ingestion using Cloud Scheduler + Cloud Function
+Storage on Cloud Storage
+AI-based weather insights using Vertex AI (Gemini)
+Modern UI deployed on GKE
+Complete automation using Terraform + GitHub Actions CI/CD
+Secure secrets with Secret Manager
+Least-privilege IAM roles
+Dockerized deployment with Kubernetes
 
-## Features
+The final application is hosted at:
+http://34.93.229.19/
 
-- Displays current weather information for any city.
-- Built with Python Flask for backend and HTML templates for frontend.
-- Deployed on a scalable Kubernetes cluster.
-- Infrastructure is managed via Terraform.
-- CI/CD pipeline automates build, Docker image push, Terraform apply, and Kubernetes deployment.
 
----
+## 1.Project Objective
 
-## Tech Stack
+To build a scalable, cost-efficient microservice that:
+ Automatically collects weather data every 30 minutes
+ Enriches it using GenAI (Vertex AI Gemini)
+ Stores it in Cloud Storage
+ Visualizes processed insights in a modern web UI
+ Uses Terraform for infrastructure
+ Uses Docker + Kubernetes + GKE for the UI layer
+ Delivers fully automated deployment using CI/CD
+ 
 
-- **Backend:** Python, Flask
-- **Frontend:** HTML/CSS (Flask templates)
-- **Containerization:** Docker
-- **Infrastructure as Code:** Terraform
-- **Orchestration:** Kubernetes (GKE)
-- **CI/CD:** GitHub Actions
-- **Cloud Provider:** Google Cloud Platform (GCP)
+## 2.Technologies Used
 
----
+Compute-Cloud Functions, GKE
+AI-Vertex AI Gemini APIs
+Storage-Cloud Storage
+Scheduling-Cloud Scheduler
+IaC-Terraform
+Containerization-Docker
+CI/CD-GitHub Actions
+Secrets-Secret Manager + Kubernetes Secrets
 
-## Project Structure
+
+## 3.Project Structure
 weather-function/
 ├── Dockerfile
 ├── main.py
 ├── requirements.txt
 ├── weather-dashboard/
 │ ├── app.py
+| ├── requirements.txt
 │ └── templates/
 │ └── weather.html
 ├── terraform/
@@ -46,4 +60,27 @@ weather-function/
 │ ├── service.yaml
 │ └── hpa.yaml
 └── .github/workflows/
-└── google.yml
+| ├── cicd.yml
+└── README.md
+
+
+## 4.Final Outcomes
+
+ Fully functional serverless microservice
+ AI-powered weather insights
+ Live UI running on GKE
+ End-to-end automation
+ Proper IAM, security, and cost-optimized infrastructure
+ Understanding of Terraform, Docker, Kubernetes, GCP, CI/CD, Vertex AI
+
+
+
+## 5.Learnings
+
+Serverless compute
+Production-grade CI/CD
+AI integration
+Container orchestration
+Secure secrets management
+Terraform provisioning
+Cloud-native design patterns
