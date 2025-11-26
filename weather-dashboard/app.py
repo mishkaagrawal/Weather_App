@@ -18,8 +18,6 @@ except ImportError:
 
 app = Flask(__name__)
 
-#os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/mishka_agrawal7904/keys/mishka-service-key.json"
-
 storage_client = storage.Client()
 BUCKET_NAME = "mishka-cme-project-weather-data" 
 
