@@ -1,5 +1,7 @@
 # Weather App
 
+Displays recent weather data for 5 places that are London,Mumbai,New York,Sydney,Tokyo with AI mood insights.
+
 This project implements a serverless, event-driven, fully automated microservice on Google Cloud Platform (GCP) with:
 
 •	Serverless ingestion using Cloud Scheduler + Cloud Function
@@ -48,21 +50,21 @@ To build a scalable, cost-efficient microservice that:
 
 ## 2.Technologies Used
 
-Compute-Cloud Functions, GKE
+•	Compute-Cloud Functions, GKE
 
-AI-Vertex AI Gemini APIs
+•	AI-Vertex AI Gemini APIs
 
-Storage-Cloud Storage
+•	Storage-Cloud Storage
 
-Scheduling-Cloud Scheduler
+•	Scheduling-Cloud Scheduler
 
-IaC-Terraform
+•	IaC-Terraform
 
-Containerization-Docker
+•	Containerization-Docker
 
-CI/CD-GitHub Actions
+•	CI/CD-GitHub Actions
 
-Secrets-Secret Manager + Kubernetes Secrets
+•	Secrets-Secret Manager + Kubernetes Secrets
 
 
 ## 3.Project Structure
@@ -78,9 +80,9 @@ weather-function/
 ├── weather-dashboard/
 
 │ ├── app.py
- ├── requirements.txt
-│ └── templates/
-│ └── weather.html
+| ├── requirements.txt
+│ ├──  templates/
+  | └── weather.html
 
 ├── terraform/
 
@@ -135,7 +137,7 @@ Create Weather Topic
 
 ### Deploy Cloud Function
 
-Deploy the Weather Ingestion Function
+Deploy the Weather Ingestion Function in main.py after installing all the dependecies listed in reqirements.txt
 
 gcloud functions deploy weather_ingest \
   --runtime=python311 \
@@ -157,7 +159,9 @@ gcloud scheduler jobs create pubsub weather-job \
 
 ### IAM Permissions
 
-Grant Pub/Sub Subscriber Role
+Creating multiple service accounts to manage the IAM Permissions properly
+
+Eg:Grant Pub/Sub Subscriber Role
 
 gcloud projects add-iam-policy-binding mishka-cme-project \
   --member="serviceAccount:574573355783-compute@developer.gserviceaccount.com" \
@@ -166,10 +170,10 @@ gcloud projects add-iam-policy-binding mishka-cme-project \
 
 <img width="2636" height="1410" alt="image" src="https://github.com/user-attachments/assets/636b38a3-0188-474e-b8be-7ec721f70ed1" />
 
-### Flask App Setup (Local)
+### Flask App 
 
-Install Flask
-pip install flask
+Install Flask to build an app.py and all the requirements listed in requirements.txt
+-pip install flask
 
 ### Enable Vertex AI + Install GenAI SDK
 
@@ -183,7 +187,7 @@ pip install flask
 
 ### Build & Deploy Container to Cloud Run
 
-1.Build Docker Image
+1.Build Docker Image after writing code for Dockerfile
 
 gcloud builds submit --tag gcr.io/mishka-cme-project/weatherapp
 
@@ -202,6 +206,8 @@ gcloud run deploy weatherapp \
 
 ### Infrastructure Deployment via Terraform
 
+Write Code for all the terraform files such as main.tf,node_pool.tf,outputs.tf,variables.tf,providers.tf
+
 terraform init
 
 terraform plan
@@ -219,11 +225,9 @@ terraform apply
 3.Apply Horizontal Pod Autoscaler
 -kubectl apply -f k8s/hpa.yaml
 
-<img width="2227" height="1585" alt="image" src="https://github.com/user-attachments/assets/c5bda211-6262-447d-9f90-919de0ae293a" />
-
-
-
 <img width="1699" height="352" alt="image" src="https://github.com/user-attachments/assets/638426c0-7a5d-465c-8664-9c2651b9c96f" />
+
+<img width="2227" height="1585" alt="image" src="https://github.com/user-attachments/assets/c5bda211-6262-447d-9f90-919de0ae293a" />
 
 <img width="3153" height="1619" alt="image" src="https://github.com/user-attachments/assets/4d6aae1c-e545-4323-bb60-ef6f0b6e563d" />
 
@@ -231,29 +235,130 @@ terraform apply
 
 
 ## Github Actions
+
+Created the CI/CD Pipeline named cicd.yml after setting Workload Identity Pool for authentication
 <img width="3187" height="1576" alt="image" src="https://github.com/user-attachments/assets/e8bd64eb-22a5-4476-86c5-8ecec3a89cb2" />
 
 ### Secrets
+
+Properly taken care of weather api key and service account json key by creating gcs secrets and storing in terraform.tfvars and adding these files in .gitignore
 <img width="3190" height="1564" alt="image" src="https://github.com/user-attachments/assets/fa546909-3671-4fb8-ac7a-807f1f8876b9" />
 
 
 ## 4.Final Outcomes
 
- Fully functional serverless microservice
- AI-powered weather insights
- Live UI running on GKE
- End-to-end automation
- Proper IAM, security, and cost-optimized infrastructure
- Understanding of Terraform, Docker, Kubernetes, GCP, CI/CD, Vertex AI
+•	Fully functional serverless microservice
+
+•	AI-powered weather insights
+
+•	Live UI running on GKE
+
+•	End-to-end automation
+
+•	Proper IAM, security and cost-optimized infrastructure
+
+•	Understanding of Terraform, Docker, Kubernetes, GCP, CI/CD, Vertex AI
+
+## 5.Advantages
+
+### 1.Google Cloud Platform (GCP)
+
+A scalable, secure, and cost-efficient cloud platform ideal for serverless event-driven architectures.
+
+Advantages:
+
+•	Fully managed services - no need to maintain servers
+
+•	Global network + low latency
+
+•	Seamless integration between services (Pub/Sub → Cloud Functions → GCS → Cloud Run → GKE)
+
+•	Strong IAM and security controls
+
+### 2.Docker (Containerization)
+
+Advantages:
+
+•	Ensures the application runs the same in all environments
+
+•	Lightweight, fast startup, and efficient resource usage
+
+•	Easy to package app + dependencies into one portable image
+
+•	Works seamlessly with Cloud Run, GKE, Cloud Build
+
+•	Improves reliability with immutable, versioned images
+
+•	Enables easy scaling using containers
 
 
+### 3.Terraform (Infrastructure as Code)
 
-## 5.Learnings
+Manages all cloud resources using code and to automate and version-control your infrastructure.
 
-Serverless compute
-Production-grade CI/CD
-AI integration
-Container orchestration
-Secure secrets management
-Terraform provisioning
-Cloud-native design patterns
+Advantages:
+
+•	Re-create the entire infrastructure with one command
+
+•	Works with Git version control
+
+•	Eliminates manual configuration mistakes
+
+•	Simplifies rollback and reproduction of environments
+
+•	Multi-cloud support
+
+
+### 4.Kubernetes (Deployment, Service, HPA)
+
+Your YAML files manage deployment on GKE.
+
+Deployment.yaml-Creates Pods/Replicas
+
+Service.yaml-Exposes the application to internal/external network
+
+HPA.yaml-Auto-scales pods based on CPU/memory usage
+
+Advantages:
+
+•	Declarative config for app lifecycle
+
+•	Auto-healing containers
+
+•	Horizontal auto-scaling for high traffic
+
+•	Portability across clouds
+
+
+### 5.GitHub Actions (CI/CD)
+
+Advantages:
+
+•	Automates build, test, and deployment steps
+
+•	Integrates directly with GitHub repos
+
+•	Improves code quality through automated checks
+
+•	Enables fast and consistent deployments
+
+•	Securely manages secrets for GCP deployment
+
+•	Reduces manual work and speeds up development workflow
+
+
+## 6.Learnings
+
+•	Serverless compute
+
+•	Production-grade CI/CD
+
+•	AI integration
+
+•	Container orchestration
+
+•	Secure secrets management
+
+•	Terraform provisioning
+
+•	Cloud-native design patterns
